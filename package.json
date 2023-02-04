@@ -1,0 +1,33 @@
+{
+  "name": "api_blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "dev": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jlucas93/api_blog.git"
+  },
+  "keywords": [],
+  "author": "João Lucas Nascimento Andrade",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jlucas93/api_blog/issues"
+  },
+  "homepage": "https://github.com/Jlucas93/api_blog#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
