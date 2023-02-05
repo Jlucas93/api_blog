@@ -1,14 +1,105 @@
+const userCreate = require("../services/userCreate.js")
+const userUpdate = require("../services/userUpdate.js")
+const userDelete = require("../services/userDelete.js")
+const getUser = require("../services/getUser.js")
 class UserController {
 
-  index(req, res) {
+  async getUser(req, res) {
+    try {
+      const { id } = req.params
 
-    const user = {
-      name: 'Lucas',
-      age: 29
+      if (!id) {
+        return res.status(400).json({ error: "Id is required" })
+      }
+
+      const user = await getUser({ id })
+
+      if (!user) {
+        return res.status(404).json({ error: "User does not exist" })
+      }
+
+      return res.status(200).json(user)
+
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({ error: "Internal server error" })
+    }
+  }
+
+  async getAllUsers(_req, res) {
+    try {
+
+      const users = await getUser({ id: null });
+
+      return res.status(200).json(users)
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({ error: "Internal server error" })
+    }
+  }
+
+  async create(req, res) {
+    try {
+      const user = await userCreate({
+        name: req.body.name,
+        user_name: req.body.user_name,
+        email: req.body.email,
+        password: req.body.password
+      })
+
+      if (!user) {
+        return res.status(400).json({ error: user })
+      }
+
+      return res.status(201).json(user)
+
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({ error: "Internal server error" })
+    }
+  }
+
+  async update(req, res) {
+    try {
+      const { id } = req.params
+
+      if (!id) {
+        return res.status(400).json({ error: "Missing Id" })
+      }
+
+      const user = await userUpdate({
+        name: req.body.name,
+        user_name: req.body.user_name,
+        email: req.body.email,
+        password: req.body.password,
+        id
+      })
+
+      if (!user) {
+        return res.status(400).json("invalid data")
+      }
+
+      return res.status(201).json(user)
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({ error: "Internal server error" })
     }
 
-    return res.status(200).json(user)
+  }
+
+  async delete(req, res) {
+    try {
+      const { id } = req.params
+
+      const deleted_user = await userDelete({ id })
+
+      return res.status(204).json(deleted_user)
+
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({ error: "Internal Server Error" })
+    }
   }
 }
 
-export default new UserController()
+module.exports = new UserController()

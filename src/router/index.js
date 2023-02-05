@@ -1,6 +1,6 @@
-import { Router } from "express";
-import verifyToken from '../middlewares/verifyToken.js'
-import user from './routes/user.js'
+const { Router } = require('express')
+const verifyToken = require('../middlewares/verifyToken')
+const user = require('./routes/user.js')
 
 const routes = Router()
 
@@ -12,4 +12,4 @@ routes.use(verifyToken)
 
 
 
-export default routes
+module.exports = routes
