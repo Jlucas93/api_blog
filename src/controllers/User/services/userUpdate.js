@@ -1,7 +1,7 @@
-const { User } = require('../../../database/models')
-const bcrypt = require('bcrypt')
+import User from '../../../database/models/user.js'
+import bcrypt from 'bcrypt'
 
-module.exports = async function userCreate({
+export default async function userCreate({
   name,
   user_name,
   email,

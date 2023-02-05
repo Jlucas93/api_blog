@@ -1,15 +1,16 @@
-const { Router } = require('express')
-const verifyToken = require('../middlewares/verifyToken')
-const user = require('./routes/user.js')
+import { Router } from 'express'
+import isLogged from '../middlewares/isLogged.js'
+
+import auth from './routes/auth.js'
+import user from './routes/user.js'
 
 const routes = Router()
 
-routes.get('/', (req, res) => { res.status(200).json(' olá, página incial') })
+
+routes.use('/', auth)
+
+routes.use(isLogged)
+
 routes.use('/user', user)
 
-//outras rotas vão aqui porque por ser obrigátorio estar logado
-routes.use(verifyToken)
-
-
-
-module.exports = routes
+export default routes

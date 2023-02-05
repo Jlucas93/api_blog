@@ -1,35 +1,30 @@
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    user_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    password: DataTypes.STRING,
+import Sequelize from 'sequelize'
+class User extends Sequelize.Model {
+  static init(sequelize) {
+    super.init(
+      {
+        name: Sequelize.STRING,
+        user_name: Sequelize.STRING,
+        email: Sequelize.STRING,
+        password: Sequelize.STRING,
+        createdAt: {
+          field: 'created_at',
+          type: Sequelize.DATE,
+        },
+        updatedAt: {
+          field: 'updated_at',
+          type: Sequelize.DATE,
+        }
+      },
+      {
+        sequelize,
+        tableName: 'user',
+        timestamps: true
+      }
+    );
 
-    createdAt: {
-      type: DataTypes.DATE,
-      field: 'created_at'
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      field: 'updated_at'
-    }
-  }, {
-    timestamps: true,
-    tableName: 'user'
-  })
-  return User;
-};
+    return this;
+  }
+}
+
+export default User;

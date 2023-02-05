@@ -1,7 +1,7 @@
-const { User } = require('../../../database/models')
-const bcrypt = require('bcrypt')
+import User from '../../../database/models/user.js'
+import bcrypt from 'bcrypt'
 
-module.exports = async function userCreate({
+export default async function userCreate({
   name,
   user_name,
   email,
@@ -13,7 +13,7 @@ module.exports = async function userCreate({
       return 'Invalid data'
     }
 
-    const verify_email = await User.findOne({ where: { email } })
+    const verify_email = await User.findOne({ where: { email: email } })
 
     if (verify_email) {
       return `Email ${email} already exists`

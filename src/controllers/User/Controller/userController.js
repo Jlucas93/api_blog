@@ -1,7 +1,8 @@
-const userCreate = require("../services/userCreate.js")
-const userUpdate = require("../services/userUpdate.js")
-const userDelete = require("../services/userDelete.js")
-const getUser = require("../services/getUser.js")
+import userCreate from "../services/userCreate.js"
+import userUpdate from "../services/userUpdate.js"
+import userDelete from "../services/userDelete.js"
+import getUser from "../services/getUser.js"
+
 class UserController {
 
   async getUser(req, res) {
@@ -102,4 +103,4 @@ class UserController {
   }
 }
 
-module.exports = new UserController()
+export default new UserController()

@@ -1,6 +1,6 @@
-const { User } = require('../../../database/models')
+import User from '../../../database/models/user.js'
 
-module.exports = async function userDelete({ id }) {
+export default async function userDelete({ id }) {
   try {
     const deleted_user = await User.destroy({ where: { id } })
 
