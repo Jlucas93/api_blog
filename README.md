@@ -1,6 +1,6 @@
-# Sobre o projeto 
+# Sobre o projeto(Em desenvolvimento... )
 
-Esta é um API Rest de blog,que realiza um CRUD(Create, Read, Update, Delete) de usuário e posts do blog juntamente com uma validação de login utilizadno JWT(jsonwebtoken).A craição das tabelas e manipulação dos dados no banco de dados foi utilizando Ssequelize e o aplicativo usa do framework express.
+Esta é um API Rest de blog,que realiza um CRUD(Create, Read, Update, Delete) de usuário e posts do blog juntamente com uma validação de login utilizadno JWT(jsonwebtoken).A craição das tabelas e manipulação dos dados no banco de dados utiliza do Ssequelize e o aplicativo usa do framework express.
 
 Rotas implementadas até o momento 
 
@@ -9,8 +9,8 @@ Rotas implementadas até o momento
 [GET] 	 /user  --> Retorna todos usuários
 [GET] 	 /user/:id 	--> Retorna 1 usuário 
 [POST] 	 /user --> Criação de usuário 
-[PATCH]  /user/:id 	--> Aualiza o usuário
-[DELETE] /categorias/:id	--> Deleta usuário
+[PATCH]  /user/:id 	--> Aualiza 1 usuário
+[DELETE] /categorias/:id	--> Deleta 1 usuário
 
 ```
 
