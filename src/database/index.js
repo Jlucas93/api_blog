@@ -1,21 +1,28 @@
-import Sequelize from 'sequelize';
-import DatabaseConfig from './config/config.cjs'
+const Sequelize = require('sequelize');
 
-import User from './models/user.js'
+const dbConfig = require('../config/database')
+const User = require('../models/User')
+const Posts = require('../models/Posts')
 
-const models = [User];
+const models = [
+  User,
+  Posts,
+];
 
-class DataBase {
+class Database {
   constructor() {
     this.init();
   }
 
   init() {
-    this.connection = new Sequelize(DatabaseConfig);
+    this.connection = new Sequelize(dbConfig);
 
-    models.map(model => model.init(this.connection));
+    models
+      .map((model) => model.init(this.connection))
+      .map(
+        (model) => model.associate && model.associate(this.connection.models)
+      );
   }
 }
 
-export default new DataBase()
-
+module.exports = new Database();

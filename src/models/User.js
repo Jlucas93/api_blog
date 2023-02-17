@@ -1,4 +1,5 @@
-import Sequelize from 'sequelize'
+const Sequelize = require('sequelize');
+
 class User extends Sequelize.Model {
   static init(sequelize) {
     super.init(
@@ -7,24 +8,22 @@ class User extends Sequelize.Model {
         user_name: Sequelize.STRING,
         email: Sequelize.STRING,
         password: Sequelize.STRING,
-        createdAt: {
-          field: 'created_at',
-          type: Sequelize.DATE,
-        },
-        updatedAt: {
-          field: 'updated_at',
-          type: Sequelize.DATE,
-        }
+        is_admin: Sequelize.BOOLEAN,
       },
       {
         sequelize,
-        tableName: 'user',
+        tableName: 'users',
         timestamps: true
       }
     );
-
     return this;
+  }
+
+  static associate(models) {
+    this.hasMany(models.Posts, {
+      as: 'posts',
+    });
   }
 }
 
-export default User;
+module.exports = User;

@@ -1,28 +1,32 @@
-'use-strict'
+'use strict';
 
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('user', {
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.createTable('Posts', {
       id: {
         type: Sequelize.BIGINT,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
-      name: {
+      user_id: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        references: { model: 'Users', key: 'id' }
+      },
+      title: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      user_name: {
+      message: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      password: {
-        type: Sequelize.STRING,
+      likes: {
+        type: Sequelize.BIGINT,
         allowNull: false,
       },
       created_at: {
@@ -36,7 +40,9 @@ module.exports = {
       deleted_at: {
         type: Sequelize.DATE,
       },
-    }),
-
-  down: (queryInterface) => queryInterface.dropTable('user'),
+    })
+  },
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('Posts');
+  }
 };

@@ -1,7 +1,7 @@
-import userCreate from "../services/userCreate.js"
-import userUpdate from "../services/userUpdate.js"
-import userDelete from "../services/userDelete.js"
-import getUser from "../services/getUser.js"
+const userCreate = require('../services/userCreate.js')
+const userUpdate = require('../services/userUpdate.js')
+const userDelete = require('../services/userDelete.js')
+const getUser = require('../services/getUser.js')
 
 class UserController {
 
@@ -27,8 +27,12 @@ class UserController {
     }
   }
 
-  async getAllUsers(_req, res) {
+  async getAllUsers(req, res) {
     try {
+      console.log(req.user)
+      if (!req.user.is_admin) {
+        return res.status(401).json({ msg: "Not admin" })
+      }
 
       const users = await getUser({ id: null });
 
@@ -45,7 +49,8 @@ class UserController {
         name: req.body.name,
         user_name: req.body.user_name,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        is_admin: req.body.is_admin || false
       })
 
       if (!user) {
@@ -73,7 +78,8 @@ class UserController {
         user_name: req.body.user_name,
         email: req.body.email,
         password: req.body.password,
-        id
+        id,
+        is_admin: req.body.is_admin || false
       })
 
       if (!user) {
@@ -85,7 +91,6 @@ class UserController {
       console.error(error)
       return res.status(500).json({ error: "Internal server error" })
     }
-
   }
 
   async delete(req, res) {
@@ -103,4 +108,4 @@ class UserController {
   }
 }
 
-export default new UserController()
+module.exports = new UserController()

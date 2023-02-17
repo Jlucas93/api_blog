@@ -1,9 +1,10 @@
-import express from 'express'
-import cors from 'cors'
-import dotenv from 'dotenv'
-import router from './router/index.js'
-import './database/index.js'
-dotenv.config()
+const express = require('express');
+const cors = require('cors');
+const router = require('./router');
+
+require('dotenv').config();
+require('./database')
+
 
 const app = express();
 

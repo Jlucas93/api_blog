@@ -1,6 +1,7 @@
-import User from '../../../database/models/user.js'
+const User = require('../../../models/User')
+const Posts = require('../../../models/Posts')
 
-export default async function getuser({ id }) {
+async function getuser({ id }) {
   try {
     if (id) {
       const user = await User.findOne({
@@ -8,13 +9,24 @@ export default async function getuser({ id }) {
         where:
         {
           id
-        }
+        },
+        include: [
+          {
+            model: Posts
+          }
+        ]
       })
-
       return user
     }
 
-    const users = await User.findAll({ attributes: ['name', 'email', 'password', 'user_name'] })
+    const users = await User.findAll({
+      include: [
+        {
+          model: Posts,
+          as: 'posts'
+        }
+      ]
+    });
 
     return users
 
@@ -22,3 +34,5 @@ export default async function getuser({ id }) {
     console.error(error)
   }
 }
+
+module.exports = getuser

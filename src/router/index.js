@@ -1,16 +1,17 @@
-import { Router } from 'express'
-import isLogged from '../middlewares/isLogged.js'
+const { Router } = require('express');
+const isLogged = require('../middlewares/isLogged.js')
 
-import auth from './routes/auth.js'
-import user from './routes/user.js'
+const auth = require('./routes/auth.js')
+const user = require('./routes/user.js')
+const post = require('./routes/posts.js')
+
 
 const routes = Router()
 
 
-routes.use('/', auth)
+routes.use('/auth', auth)
 
-routes.use(isLogged)
+routes.use('/user', isLogged, user)
+routes.use('/post', isLogged, post)
 
-routes.use('/user', user)
-
-export default routes
+module.exports = routes

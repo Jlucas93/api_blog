@@ -1,12 +1,13 @@
-import User from '../../../database/models/user.js'
-import bcrypt from 'bcrypt'
+const User = require('../../../models/User')
+const bcrypt = require('bcrypt')
 
-export default async function userCreate({
+async function userCreate({
   name,
   user_name,
   email,
   password,
-  id
+  id,
+  is_admin
 }) {
   try {
     const user = await User.findOne({ where: { id } })
@@ -17,11 +18,14 @@ export default async function userCreate({
       name,
       user_name,
       email,
-      password: hash ? hash : user.password
+      password: hash ? hash : user.password,
+      is_admin: is_admin || false
     })
 
     return user
   } catch (error) {
     console.error(error)
   }
-} 
+}
+
+module.exports = userCreate

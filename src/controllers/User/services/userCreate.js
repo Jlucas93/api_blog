@@ -1,11 +1,12 @@
-import User from '../../../database/models/user.js'
-import bcrypt from 'bcrypt'
+const User = require('../../../models/User')
+const bcrypt = require('bcrypt')
 
-export default async function userCreate({
+async function userCreate({
   name,
   user_name,
   email,
   password,
+  is_admin
 }) {
   try {
 
@@ -13,10 +14,14 @@ export default async function userCreate({
       return 'Invalid data'
     }
 
-    const verify_email = await User.findOne({ where: { email: email } })
+    const verify_email = await User.findOne({ where: { email } })
+    const verify_user_name = await User.findOne({ where: { user_name } })
 
-    if (verify_email) {
-      return `Email ${email} already exists`
+    if (verify_email || verify_user_name) {
+      return `Email ${email} or ${user_name} already exists`
+    }
+    if (verify_user_name) {
+      return `User name ${user_name} already exists`
     }
 
     const hash = bcrypt.hashSync(password, 10)
@@ -26,10 +31,13 @@ export default async function userCreate({
       user_name,
       email,
       password: hash,
+      is_admin: is_admin ? true : false
     })
 
     return user
   } catch (error) {
     console.error(error)
   }
-} 
+}
+
+module.exports = userCreate
