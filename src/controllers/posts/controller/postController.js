@@ -82,9 +82,7 @@ class PostsController {
     }
   }
 
-  async update(req, res) {
-
-  }
+  async update(req, res) { }
 
   delete(req, res) { }
 }

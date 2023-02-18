@@ -27,7 +27,7 @@ async function getUserPosts({
       user_id: post.user_id,
       likes: post.likes,
       publish_date: post.createdAt,
-      categories: post.categories.map((category) => (category.name))
+      categories: post.categories?.map((category) => (category.name))
     }))
     return result
 
