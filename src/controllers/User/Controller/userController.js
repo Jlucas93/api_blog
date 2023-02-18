@@ -29,7 +29,6 @@ class UserController {
 
   async getAllUsers(req, res) {
     try {
-      console.log(req.user)
       if (!req.user.is_admin) {
         return res.status(401).json({ msg: "Not admin" })
       }

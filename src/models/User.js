@@ -9,6 +9,14 @@ class User extends Sequelize.Model {
         email: Sequelize.STRING,
         password: Sequelize.STRING,
         is_admin: Sequelize.BOOLEAN,
+        createdAt: {
+          field: 'created_at',
+          type: Sequelize.DATE,
+        },
+        updatedAt: {
+          field: 'updated_at',
+          type: Sequelize.DATE,
+        }
       },
       {
         sequelize,
@@ -22,6 +30,7 @@ class User extends Sequelize.Model {
   static associate(models) {
     this.hasMany(models.Posts, {
       as: 'posts',
+      foreignKey: 'user_id',
     });
   }
 }

@@ -1,5 +1,6 @@
 const postCreate = require('../services/postCreate')
 const getPost = require('../services/getPost')
+const getUserPosts = require('../services/getUserPosts')
 
 class PostsController {
 
@@ -38,6 +39,26 @@ class PostsController {
     } catch (error) {
       console.error(error)
       return res.status(500).json({ error: "Internal server error" })
+    }
+  }
+
+  async UserPosts(req, res) {
+    try {
+
+      const user_id = req.user.id
+
+
+      const post = await getUserPosts({ user_id })
+
+      if (!post) {
+        return res.status(404).json({ error: "Post does not exist" })
+      }
+
+      return res.status(200).json(post)
+
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json('Internal Server Error')
     }
   }
 

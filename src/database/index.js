@@ -1,12 +1,17 @@
 const Sequelize = require('sequelize');
 
 const dbConfig = require('../config/database')
+
 const User = require('../models/User')
 const Posts = require('../models/Posts')
+const Categories = require('../models/Categories')
+const PostsCategories = require('../models/PostCategories')
 
 const models = [
   User,
   Posts,
+  Categories,
+  PostsCategories,
 ];
 
 class Database {

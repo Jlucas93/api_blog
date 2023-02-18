@@ -1,13 +1,11 @@
 const Sequelize = require('sequelize');
 
-class Posts extends Sequelize.Model {
+class PostCategories extends Sequelize.Model {
   static init(sequelize) {
     super.init(
       {
-        title: Sequelize.STRING,
-        message: Sequelize.STRING,
-        user_id: Sequelize.BIGINT,
-        likes: Sequelize.BIGINT,
+        category_id: Sequelize.BIGINT,
+        post_id: Sequelize.BIGINT,
         createdAt: {
           field: 'created_at',
           type: Sequelize.DATE,
@@ -19,7 +17,7 @@ class Posts extends Sequelize.Model {
       },
       {
         sequelize,
-        tableName: 'posts',
+        tableName: 'postcategories',
         timestamps: true
       }
     );
@@ -27,19 +25,16 @@ class Posts extends Sequelize.Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.User, {
-      foreignKey: 'id',
-      as: 'user',
-    });
-
-    this.belongsToMany(models.Categories, {
-      through: models.PostCategories,
+    this.belongsTo(models.Posts, {
       foreignKey: 'post_id',
-      otherKey: 'category_id',
-      as: 'categories'
+      as: 'post',
     });
 
+    this.belongsTo(models.Categories, {
+      foreignKey: 'category_id',
+      as: 'category',
+    });
   }
 }
 
-module.exports = Posts;
+module.exports = PostCategories;
