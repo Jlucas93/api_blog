@@ -2,6 +2,7 @@ const userCreate = require('../services/userCreate.js')
 const userUpdate = require('../services/userUpdate.js')
 const userDelete = require('../services/userDelete.js')
 const getUser = require('../services/getUser.js')
+const getUserPosts = require('../services/getUserPosts')
 
 class UserController {
 
@@ -42,6 +43,25 @@ class UserController {
     }
   }
 
+  async getPosts(req, res) {
+    try {
+
+      const user_id = req.user.id
+
+      const post = await getUserPosts({ user_id })
+
+      if (!post) {
+        return res.status(404).json({ error: "Post does not exist" })
+      }
+
+      return res.status(200).json(post)
+
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json('Internal Server Error')
+    }
+  }
+
   async create(req, res) {
     try {
       const user = await userCreate({
@@ -56,7 +76,7 @@ class UserController {
         return res.status(400).json({ error: user })
       }
 
-      return res.status(201).json(user)
+      return res.status(201).json({ user, message: "User Created" })
 
     } catch (error) {
       console.error(error)
@@ -85,7 +105,7 @@ class UserController {
         return res.status(400).json("invalid data")
       }
 
-      return res.status(201).json(user)
+      return res.status(201).json({ message: "User updated" })
     } catch (error) {
       console.error(error)
       return res.status(500).json({ error: "Internal server error" })
@@ -98,7 +118,11 @@ class UserController {
 
       const deleted_user = await userDelete({ id })
 
-      return res.status(204).json(deleted_user)
+      if (!deleted_user) {
+        return res.status(404).json({ message: deleted_user })
+      }
+
+      return res.status(200).json({ message: deleted_user })
 
     } catch (error) {
       console.error(error)

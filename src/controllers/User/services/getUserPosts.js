@@ -1,7 +1,5 @@
 const Posts = require('../../../models/Posts')
-const User = require('../../../models/User')
 const Categories = require('../../../models/Categories')
-const PostCategories = require('../../../models/PostCategories')
 
 async function getUserPosts({
   user_id
@@ -19,7 +17,6 @@ async function getUserPosts({
       ],
     });
 
-
     const result = posts.map((post) => ({
       id: post.id,
       title: post.title,
@@ -29,8 +26,8 @@ async function getUserPosts({
       publish_date: post.createdAt,
       categories: post.categories?.map((category) => (category.name))
     }))
-    return result
 
+    return result
 
   } catch (error) {
     console.error(error)

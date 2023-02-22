@@ -1,7 +1,7 @@
 const postCreate = require('../services/postCreate')
 const getPost = require('../services/getPost')
-const getUserPosts = require('../services/getUserPosts')
-
+const updatePost = require('../services/updatePost')
+const postDelete = require('../services/postDelete')
 class PostsController {
 
   async getPost(req, res) {
@@ -33,7 +33,7 @@ class PostsController {
         return res.status(401).json({ msg: "Only admisn have acess" })
       }
 
-      const posts = await getUser({ id: null });
+      const posts = await getPost({ id: null });
 
       return res.status(200).json(posts)
     } catch (error) {
@@ -65,16 +65,16 @@ class PostsController {
   async create(req, res) {
     try {
 
-      const { title, message, } = req.body
+      const { title, message, category_ids } = req.body
       const user = req.user
 
-      const post = await postCreate({ title, message, user_id: user.id })
+      const post = await postCreate({ title, message, user_id: user.id, category_ids })
 
       if (!post) {
         return res.status(400).json({ error: post })
       }
 
-      return res.status(201).json(post)
+      return res.status(201).json({ post, message: "Post Created" })
 
     } catch (error) {
       console.error(error)
@@ -82,9 +82,50 @@ class PostsController {
     }
   }
 
-  async update(req, res) { }
+  async update(req, res) {
+    try {
+      const { id } = req.params
+      const { title, message, likes, category_ids } = req.body
 
-  delete(req, res) { }
+      if (!id) {
+        return res.status(400).json({ error: "Missing Id" })
+      }
+
+      const post = await updatePost({
+        title,
+        message,
+        likes,
+        category_ids,
+        id
+      })
+
+      if (!post) {
+        return res.status(400).json("invalid data")
+      }
+
+      return res.status(201).json({ message: "Post Updated" })
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      const { id } = req.params
+
+      if (!id) {
+        return res.status(400).json({ error: "Missing Id" })
+      }
+
+      const post = await postDelete({ post_id: id })
+
+      return res.status(200).json({ message: post })
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
 }
 
 module.exports = new PostsController()

@@ -2,9 +2,16 @@ const User = require('../../../models/User')
 
 async function userDelete({ id }) {
   try {
-    const deleted_user = await User.destroy({ where: { id } })
 
-    return deleted_user
+    const user = await User.findOne({ where: { id } })
+
+    if (!user) {
+      return 'User not found'
+    }
+
+    user.destroy()
+
+    return 'User deleted'
 
   } catch (error) {
     return console.error(error)

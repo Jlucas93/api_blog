@@ -17,6 +17,9 @@ async function userCreate({
     const verify_email = await User.findOne({ where: { email } })
     const verify_user_name = await User.findOne({ where: { user_name } })
 
+    console.log(verify_email)
+    console.log(verify_user_name)
+
     if (verify_email || verify_user_name) {
       return `Email ${email} or ${user_name} already exists`
     }

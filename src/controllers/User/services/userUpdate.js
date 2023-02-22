@@ -19,7 +19,7 @@ async function userCreate({
       user_name,
       email,
       password: hash ? hash : user.password,
-      is_admin: is_admin || false
+      is_admin: is_admin || user.is_admin
     })
 
     return user
