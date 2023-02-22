@@ -2,6 +2,8 @@ const postCreate = require('../services/postCreate')
 const getPost = require('../services/getPost')
 const updatePost = require('../services/updatePost')
 const postDelete = require('../services/postDelete')
+const incrementLikes = require('../services/incrementLikes')
+const decrementLikes = require('../services/decrementLikes')
 class PostsController {
 
   async getPost(req, res) {
@@ -42,17 +44,27 @@ class PostsController {
     }
   }
 
-  async UserPosts(req, res) {
+  async increaseLikes(req, res) {
     try {
 
-      const user_id = req.user.id
+      const { id } = req.params
 
+      const post = await incrementLikes({ id })
 
-      const post = await getUserPosts({ user_id })
+      return res.status(200).json(post)
 
-      if (!post) {
-        return res.status(404).json({ error: "Post does not exist" })
-      }
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json('Internal Server Error')
+    }
+  }
+
+  async decreaseLikes(req, res) {
+    try {
+
+      const { id } = req.params
+
+      const post = await decrementLikes({ id })
 
       return res.status(200).json(post)
 
