@@ -30,14 +30,27 @@ class PostsController {
 
   async getAllPosts(req, res) {
     try {
+      let { page, perPage } = req.query
+
+      page = parseInt(page, 10) || 1
+
+      const limit = parseInt(perPage, 10) || 20
+
+      const offset = (page - 1) * limit
 
       if (!req.user.is_admin) {
         return res.status(401).json({ msg: "Only admisn have acess" })
       }
 
-      const posts = await getPost({ id: null });
+      const { result, total_posts } = await getPost({ offset, limit, id: null });
 
-      return res.status(200).json(posts)
+      return res.status(200).json({
+        posts: result,
+        page: page,
+        perPage: limit,
+        totalPosts: total_posts,
+        totalPages: Math.ceil(total_posts / limit),
+      })
     } catch (error) {
       console.error(error)
       return res.status(500).json({ error: "Internal server error" })

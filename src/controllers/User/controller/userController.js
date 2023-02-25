@@ -45,16 +45,24 @@ class UserController {
 
   async getPosts(req, res) {
     try {
+      let { page, perPage } = req.query
+
+      page = parseInt(page, 10) || 1
+      const limit = parseInt(perPage, 10) || 20
+
+      const offset = (page - 1) * limit
 
       const user_id = req.user.id
 
-      const post = await getUserPosts({ user_id })
+      const { result, total_posts } = await getUserPosts({ offset, limit, user_id })
 
-      if (!post) {
-        return res.status(404).json({ error: "Post does not exist" })
-      }
-
-      return res.status(200).json(post)
+      return res.status(200).json({
+        posts: result,
+        page: page,
+        perPage: limit,
+        totalPosts: total_posts,
+        totalPages: Math.ceil(total_posts / limit),
+      })
 
     } catch (error) {
       console.error(error)

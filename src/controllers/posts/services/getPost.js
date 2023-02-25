@@ -3,6 +3,8 @@ const User = require('../../../models/User')
 const Categories = require('../../../models/Categories')
 
 async function postCreate({
+  offset,
+  limit,
   id
 }) {
   try {
@@ -26,7 +28,11 @@ async function postCreate({
       return post
     }
 
+
     const posts = await Posts.findAll({
+      offset,
+      limit,
+      order: [['created_at', 'ASC']],
       include: [
         {
           model: Categories,
@@ -35,6 +41,8 @@ async function postCreate({
         },
       ]
     })
+
+    const total_posts = await Posts.count()
 
     const result = posts.map((post) => ({
       id: post.id,
@@ -46,7 +54,7 @@ async function postCreate({
       categories: post.categories?.map((category) => (category.name))
     }))
 
-    return result
+    return { result, total_posts }
 
 
   } catch (error) {
