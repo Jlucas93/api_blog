@@ -30,13 +30,26 @@ class UserController {
 
   async getAllUsers(req, res) {
     try {
+      let { page, perPage } = req.query
+
+      page = parseInt(page, 10) || 1
+
+      const limit = parseInt(perPage, 10) || 20
+      const offset = (page - 1) * limit
+
       if (!req.user.is_admin) {
         return res.status(401).json({ msg: "Not admin" })
       }
 
-      const users = await getUser({ id: null });
+      const { result, total_users } = await getUser({ offset, limit, id: null });
 
-      return res.status(200).json(users)
+      return res.status(200).json({
+        users: result,
+        totalUsers: total_users,
+        page,
+        perPage: limit,
+        totalPages: Math.ceil(total_users / limit)
+      });
     } catch (error) {
       console.error(error)
       return res.status(500).json({ error: "Internal server error" })

@@ -13,7 +13,6 @@ async function postCreate({
       return 'Invalid data'
     }
 
-
     const post = await Posts.create({
       title,
       message,

@@ -46,7 +46,7 @@ class PostsController {
 
       return res.status(200).json({
         posts: result,
-        page: page,
+        page,
         perPage: limit,
         totalPosts: total_posts,
         totalPages: Math.ceil(total_posts / limit),

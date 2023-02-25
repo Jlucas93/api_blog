@@ -1,7 +1,7 @@
 const User = require('../../../models/User')
 const Posts = require('../../../models/Posts')
 
-async function getuser({ id }) {
+async function getuser({ offset, limit, id }) {
   try {
     if (id) {
       const user = await User.findOne({
@@ -20,15 +20,21 @@ async function getuser({ id }) {
     }
 
     const users = await User.findAll({
-      include: [
-        {
-          model: Posts,
-          as: 'posts'
-        }
-      ]
-    });
+      offset,
+      limit,
+      order: [['created_at', 'ASC']],
+    })
 
-    return users
+    const result = users.map((user) => ({
+      name: user.name,
+      user_name: user.user_name,
+      email: user.email,
+      created_at: user.createdAt,
+    }))
+
+    const total_users = await User.count()
+
+    return { result, total_users }
 
   } catch (error) {
     console.error(error)
